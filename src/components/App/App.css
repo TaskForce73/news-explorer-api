@@ -1,0 +1,13 @@
+.app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 1440px) {
+  .app {
+    padding: 0;
+    margin: 0 auto;
+  }
+}
