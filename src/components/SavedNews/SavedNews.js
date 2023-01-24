@@ -3,15 +3,19 @@ import { useEffect } from 'react';
 import { getArticles } from '../../utils/auth';
 import NewCardList from '../NewCardList/NewCardList';
 
-const SavedNews = ({ setSavedArticles, savedArticles, setKeywords }) => {
+const SavedNews = ({ setSavedArticles, savedArticles, setKeywords,  isLogin }) => {
+
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    getArticles(token).then((res) => {
-      setSavedArticles(res.data);
-      const words = res.data.map((i) => i.keyword);
-      setKeywords([...new Set(words)]);
-    });
-  }, [setKeywords, setSavedArticles]);
+    if(isLogin) {
+      const token = localStorage.getItem('jwt');
+      getArticles(token).then((res) => {
+        setSavedArticles(res.data);
+        const words = res.data.map((i) => i.keyword);
+        setKeywords([...new Set(words)]);
+      });
+    }
+  }, [setKeywords, setSavedArticles, isLogin]);
+
   return (
     <div className="saved-news">
       {savedArticles.length > 0 ? (

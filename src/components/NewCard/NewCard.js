@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { saveArticles, deleteSavedArticles } from '../../utils/auth';
 import Mark from '../../images/Mark.svg';
 import savedMark from '../../images/Mark-active.svg';
+import hoveredMark from '../../images/Mark-hover.svg';
 
 const NewCard = ({
   isLogin,
@@ -11,26 +12,30 @@ const NewCard = ({
   setSavedArticles,
   setKeywords,
   savedArticles,
-  setIsSignUpPopupOpen
+  setIsSignUpPopupOpen,
 }) => {
   let location = useLocation();
   const [isHome, setIsHome] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [isSave, setIsSave] = useState(false);
-
+  const [hovered, setHovered] = useState(false);
 
   function registerClick() {
-    setIsSignUpPopupOpen(true)
+    setIsSignUpPopupOpen(true);
   }
+
+  function getCardId() {
+    const savedCard = savedArticles.find(
+      (item) => item.title === article.title
+    );
+    return savedCard;
+  }
+
   useEffect(() => {
-    if (isLogin) {
-      savedArticles.forEach((element) => {
-        if (element.title === article.title) {
-          setIsSave(true);
-        }
-      });
-    }
-  }, [isLogin, article.title, savedArticles]);
+    savedArticles &&
+      savedArticles.some((item) => item.title === article.title) &&
+      setIsSave(true);
+  }, [savedArticles, article.title]);
 
   useEffect(() => {
     const toDate = (date) => {
@@ -80,13 +85,29 @@ const NewCard = ({
     });
   }
 
-  function deleteCard() {
+  function deleteCard(article) {
     const token = localStorage.getItem('jwt');
     deleteSavedArticles(token, article._id).then((res) => {
       setSavedArticles(res.data);
       const words = res.data.map((i) => i.keyword);
-      setKeywords([...new Set(words)]);
+      if (location.pathname !== '/') {
+        setKeywords([...new Set(words)]);
+      }
     });
+  }
+
+  function handleDeleteClick(e) {
+    e.stopPropagation();
+    if (isLogin && location.pathname === '/') {
+      if (isSave) {
+        const article = getCardId();
+        deleteCard(article);
+        setIsSave((isSave) => !isSave);
+      } else {
+        saveArticlesFromClient();
+        setIsSave((isSave) => !isSave);
+      }
+    }
   }
 
   return (
@@ -105,23 +126,34 @@ const NewCard = ({
         {location.pathname === '/saved-news' ? article.keyword : null}
       </p>
       {isLogin ? (
-      <button
-        className="element__mark"
-        aria-label="mark"
-        type="button"
-        onClick={saveArticlesFromClient}
-        style={{
-          display: location.pathname === '/saved-news' ? 'none' : 'block',
-          backgroundImage: isSave ? `url(${savedMark})` : `url(${Mark})`,
-        }}
-      ></button>
+        <button
+          className="element__mark"
+          aria-label="mark"
+          type="button"
+          onClick={handleDeleteClick}
+          style={{
+            display: location.pathname === '/saved-news' ? 'none' : 'block',
+            backgroundImage: isSave
+              ? `url(${savedMark})`
+              : hovered
+              ? `url(${hoveredMark})`
+              : `url(${Mark})`,
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        ></button>
       ) : (
         <button
-        className="element__mark"
-        aria-label="mark"
-        type="button"
-        onClick={registerClick}
-      ></button>
+          className="element__mark"
+          aria-label="mark"
+          type="button"
+          onClick={registerClick}
+          style={{
+            backgroundImage: hovered ? `url(${hoveredMark})` : `url(${Mark})`,
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        ></button>
       )}
       {screenWidth >= 1024 && (
         <div
@@ -141,7 +173,7 @@ const NewCard = ({
         className="element__bin"
         aria-label="delete"
         type="button"
-        onClick={deleteCard}
+        onClick={() => deleteCard(article)}
         style={{
           display: location.pathname === '/saved-news' ? 'block' : 'none',
         }}

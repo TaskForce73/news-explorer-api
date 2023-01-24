@@ -1,19 +1,34 @@
+import React, {useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchArticles } from '../../utils/NewsApi';
 
 const SearchForm = ({ setArticles, setSearchQuestion, setIsLoading }) => {
+  const [values, setValues] = useState({question : ""});
+
+  const handleChange = (e) => {
+    const target = e.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+  };
+
   function handleSearch(e) {
     e.preventDefault();
     const token = localStorage.getItem('jwt');
-    const question = e.target.elements.search.value;
-    searchArticles(question, token)
+    searchArticles(values.question, token)
       .then((res) => {
         setIsLoading(true);
         setArticles(res.articles);
-        setSearchQuestion(question);
+        setSearchQuestion(values.question);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(()=>{
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+      })
   }
+  
 
   let location = useLocation();
   return (
@@ -29,12 +44,13 @@ const SearchForm = ({ setArticles, setSearchQuestion, setIsLoading }) => {
       <form className="form__field" onSubmit={handleSearch}>
         <input
           type="text"
-          name="search"
+          name="question"
           placeholder="Enter topic"
           minLength="2"
           maxLength="40"
           required
           className="form__field-topic"
+          onChange={handleChange}
         ></input>
         <button type="submit" className="form__field-button">
           Search

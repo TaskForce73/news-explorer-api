@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -19,11 +19,12 @@ function App() {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const [token, setToken] = React.useState(localStorage.getItem('jwt'));
   const [articles, setArticles] = useState([]);
-  const [searchQuestion, setSearchQuestion] = useState();
+  const [searchQuestion, setSearchQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [savedArticles, setSavedArticles] = useState([]);
   const [errorText, setErrorText] = useState(false);
+  const [buttonText, setButtonText] = React.useState(false);
   const navigate = useNavigate();
 
   function handleSignInPopupClick() {
@@ -49,7 +50,7 @@ function App() {
 
   useEffect(() => {
     const close = (e) => {
-      if (e.keyCode === 27) {
+      if (e.key === 'Escape') {
         closeAllPopups();
       }
     };
@@ -71,6 +72,7 @@ function App() {
   }, []);
 
   function signin({ email, password }) {
+    setButtonText(true);
     auth
       .authorize(password, email)
       .then((res) => {
@@ -87,10 +89,16 @@ function App() {
         setTimeout(() => {
           setErrorText(false);
         }, 3000);
+      })
+      .finally(() => {
+        setTimeout(() => {
+       setButtonText(false);
+        }, 1000);
       });
   }
 
   function signup({ username, email, password }) {
+    setButtonText(true);
     auth
       .register(email, password, username)
       .then(() => {
@@ -103,6 +111,11 @@ function App() {
         setTimeout(() => {
           setErrorText(false);
         }, 3000);
+      })
+      .finally(() => {
+        setTimeout(() => {
+       setButtonText(false);
+        }, 1000);
       });
   }
 
@@ -133,12 +146,6 @@ function App() {
     navigate('/');
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-  });
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
@@ -158,11 +165,12 @@ function App() {
               <ProtectedRoute
                 isLogin={isLogin}
                 setIsSignUpPopupOpen={setIsSignUpPopupOpen}
-              >
+                >
                 <SavedNewsHeader
                   name={name}
                   savedArticles={savedArticles}
                   setSavedArticles={setSavedArticles}
+                  isLogin={isLogin}
                 />
               </ProtectedRoute>
             }
@@ -181,6 +189,7 @@ function App() {
               />
             }
           />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
         <PopupSignIn
@@ -189,6 +198,7 @@ function App() {
           onClose={closeAllPopups}
           onStateChange={handleChangePopupState}
           errorText={errorText}
+          buttonText={buttonText}
         />
         <PopupSignUp
           onRegister={signup}
@@ -196,6 +206,7 @@ function App() {
           onClose={closeAllPopups}
           onStateChange={handleChangePopupState}
           errorText={errorText}
+          buttonText={buttonText}
         />
 
         <PopupConfirm

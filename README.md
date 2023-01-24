@@ -6,7 +6,7 @@ back-end repository:
 https://github.com/TaskForce73/news-explorer-backend
 
 front-end repository:
-https://github.com/TaskForce73/news-explorer-frontend
+https://github.com/TaskForce73/news-explorer-api
 
 live:
 https://teresanews.students.nomoredomainssbs.ru

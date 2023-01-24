@@ -3,7 +3,14 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
 
-function PopupSignIn({ isOpen, onClose, onLogin, onStateChange, errorText }) {
+function PopupSignIn({
+  isOpen,
+  onClose,
+  onLogin,
+  onStateChange,
+  errorText,
+  buttonText,
+}) {
   const { values, errors, isValid, handleChange } = useForm();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,7 +65,7 @@ function PopupSignIn({ isOpen, onClose, onLogin, onStateChange, errorText }) {
           color: isValid ? '#FFFFFF' : '#B6BCBF',
         }}
       >
-        Sign in
+        {buttonText ? 'Saving...' : 'Save'}
       </button>
       <p className="popup__signup">
         or

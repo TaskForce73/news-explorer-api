@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SavedNews from '../SavedNews/SavedNews';
-const SavedNewsHeader = ({ name, savedArticles, setSavedArticles }) => {
+const SavedNewsHeader = ({ name, savedArticles, setSavedArticles,  isLogin}) => {
   const [keywords, setKeywords] = useState([]);
   let location = useLocation();
   return (
@@ -31,6 +31,7 @@ const SavedNewsHeader = ({ name, savedArticles, setSavedArticles }) => {
         </p>
       </div>
       <SavedNews
+       isLogin={isLogin}
         setSavedArticles={setSavedArticles}
         savedArticles={savedArticles}
         setKeywords={setKeywords}

@@ -8,6 +8,7 @@ function PopupSignUp({
   onRegister,
   onStateChange,
   errorText,
+  buttonText,
 }) {
   const { values, errors, isValid, handleChange } = useForm();
   const handleSubmit = (e) => {
@@ -75,7 +76,7 @@ function PopupSignUp({
           color: isValid ? '#FFFFFF' : '#B6BCBF',
         }}
       >
-        Sign up
+        {buttonText ? 'Saving...' : 'Save'}
       </button>
       <p className="popup__signup">
         or

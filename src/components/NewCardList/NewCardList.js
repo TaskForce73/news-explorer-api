@@ -11,16 +11,18 @@ const NewCardList = ({
   isLoading,
   setKeywords,
   savedArticles,
-  setIsSignUpPopupOpen
+  setIsSignUpPopupOpen,
 }) => {
   let location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    getArticles(token).then((res) => {
-      setSavedArticles(res.data);
-    });
-  }, [setSavedArticles]);
+    if (isLogin) {
+      const token = localStorage.getItem('jwt');
+      getArticles(token).then((res) => {
+        setSavedArticles(res.data);
+      });
+    }
+  }, [setSavedArticles, isLogin]);
 
   const [articlesAmount, setArticlesAmount] = useState(3);
   return (

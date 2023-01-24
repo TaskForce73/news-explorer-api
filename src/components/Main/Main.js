@@ -10,29 +10,28 @@ const Main = ({
   isLoading,
   savedArticles,
   setSavedArticles,
-  setIsSignUpPopupOpen
+  setIsSignUpPopupOpen,
 }) => {
+  
   return (
-    <>
-      <div className="main">
-        {isLoading && searchQuestion && <Preloader />}
-        <NewCardList
-          isLogin={isLogin}
-          articles={articles}
-          searchQuestion={searchQuestion}
-          isLoading={isLoading}
-          savedArticles={savedArticles}
-          setSavedArticles={setSavedArticles}
-          setIsSignUpPopupOpen={setIsSignUpPopupOpen}
-        ></NewCardList>
-        <NothingFound
-          articles={articles}
-          searchQuestion={searchQuestion}
-          isLoading={isLoading}
-        ></NothingFound>
-        <About></About>
-      </div>
-    </>
+    <main className="main">
+      {isLoading && searchQuestion && <Preloader />}
+      <NewCardList
+        isLogin={isLogin}
+        articles={articles}
+        searchQuestion={searchQuestion}
+        isLoading={isLoading}
+        savedArticles={savedArticles}
+        setSavedArticles={setSavedArticles}
+        setIsSignUpPopupOpen={setIsSignUpPopupOpen}
+      ></NewCardList>
+      <NothingFound
+        articles={articles}
+        searchQuestion={searchQuestion}
+        isLoading={isLoading}
+      ></NothingFound>
+      <About />
+    </main>
   );
 };
 
