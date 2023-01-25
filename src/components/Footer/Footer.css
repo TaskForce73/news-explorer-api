@@ -1,0 +1,146 @@
+.footer {
+  max-width: 1440px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  color: #ffffff;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer__rights {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #b6bcbf;
+  padding: 32px 0 26px 104px;
+  margin: 0;
+}
+
+.footer__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  max-height: 24px;
+  margin-right: 106px;
+  padding: 0;
+}
+
+.footer__container-item {
+  text-decoration: none;
+  display: flex;
+  list-style-type: none;
+}
+
+.footer__container-home {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  color: #1a1b22;
+  padding-right: 40px;
+  text-decoration: none;
+}
+
+.footer__container-practicum {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  color: #1a1b22;
+  padding-right: 40px;
+  text-decoration: none;
+}
+
+.footer__container-social {
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.footer__container-social_type_github {
+  background: url(../../images/github.svg);
+  margin-right: 24px;
+}
+
+.footer__container-social_type_facebook {
+  background: url(../../images/fb.svg);
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .footer__container {
+    margin-right: 40px;
+  }
+
+  .footer__rights {
+    padding: 24px 0 18px 40px;
+  }
+}
+
+@media screen and (min-width: 618px) and (max-width: 767px) {
+  .footer {
+    align-items: baseline;
+  }
+  .footer__rights {
+    padding: 32px 0 26px 16px;
+    margin: 0;
+  }
+
+  .footer__container {
+    margin-right: 16px;
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 617px) {
+  .footer {
+    display: flex;
+    flex-direction: column-reverse;
+    min-width: 320px;
+  }
+
+  .footer__container {
+    display: grid;
+    grid-auto-flow: row dense;
+    max-width: 288px;
+    max-height: 74px;
+    grid-template: repeat(1, 1fr) / repeat(1, 194px 1fr 1fr);
+    grid-row-gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__container-item:nth-of-type(2) {
+    grid-row-start: 3;
+  }
+
+  .footer__container-home {
+    padding: 0;
+  }
+
+  .footer__container-social_type_github {
+    margin-right: 27.89px;
+    margin-left: 17.89px;
+    padding: 0;
+  }
+
+  .footer__container-social_type_facebook {
+    padding: 0;
+  }
+
+  .footer__container-practicum {
+    padding: 0;
+  }
+
+  .footer__rights {
+    margin: 0;
+    padding: 38px 0 22px;
+  }
+}
